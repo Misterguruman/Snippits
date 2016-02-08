@@ -1,0 +1,11 @@
+https://github.com/FireWalkerX/ath10k-firmware/blob/master/QCA6174/hw3.0/board-2.bin
+
+https://github.com/FireWalkerX/ath10k-firmware/blob/master/QCA6174/hw3.0/firmware-4.bin_WLAN.RM.2.0-00180-QCARMSWPZ-1
+
+/lib/firmware/ath10k/QCA6174/hw3.0/board.bin
+/lib/firmware/ath10k/QCA6174/hw3.0/firmware-5.bin
+
+echo "options ath10k_core skip_otp=y" > /etc/modprobe.d/ath10k.conf
+rmmod -v ath10k_pci
+rmmod -v ath10k_core
+modprobe -v ath10k_pci
