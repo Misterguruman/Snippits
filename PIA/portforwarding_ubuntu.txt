@@ -1,0 +1,30 @@
+rainmakerraw 
+May 2014 Posts: 222
+I also would like to try openvpn.  In a way I already did and it worked.  The only thing missing for me was the port forwarding. As I am new to linux, I have to figure out how to do that independently and then I would use openvpn. Until then it is the app.
+You're using Kubuntu 14.04 if I remember correctly? If so, open a terminal (konsole) and type the following commands. You can also copy and paste them. Copy as usual by selecting with the mouse and going right click > copy (or CTRL + C). In the terminal/konsole you can paste by holding CTRL + SHIFT + V. It's way easier than typing long commands out!
+
+First do
+
+head -n 100 /dev/urandom | md5sum | tr -d " -" > ~/.pia_client_id
+
+then
+
+sudo apt-get update && sudo apt-get install curl
+
+That will generate a random number and store it in a file hidden in your home directory, called pia_client_id. It's this random number the PIA server will use to link the forwarded port to you anonymously. Curl is a little Linux app that will let you send the request to PIA's server for the port forward. 
+
+Once those two things are done, you can then use the following text - pasted into your terminal/konsole - to get the port. Replace USERNAME and PASSWORD to those of your account. You'll also need to change the ADDRESS to the LOCAL IP you have been issued for that particular connection to PIA (i.e. it will change each session). 
+
+curl -d "user=USERNAME&pass=PASSWORD&client_id=$(cat ~/.pia_client_id)&local_ip=ADDRESS" https://www.privateinternetaccess.com/vpninfo/port_forward_assignment
+
+You will already  know your username and password. The IP address can be found by typing in 'ifconfig' to the terminal/konsole window. It will return a bunch of text including a section for tun0 (the VPN connection) and a local address looking something like 10.136.1.6
+
+That local IP address (starting with a 10) is the one you copy in. It might seem a lot when you read it the first time, if you're new to stuff like this. But it's really easy. 
+
+1) ifconfig (which shows your local IP for tun0 is - for example - 10.136.1.6)
+
+2) curl -d "user=P123456&pass=aBc123&client_id=$(cat ~/.pia_client_id)&local_ip=10.136.1.6" https://www.privateinternetaccess.com/vpninfo/port_forward_assignment
+
+Once you press enter/return, you will get a result along the lines of 'Port forward 87654. That's the port number you need to put into applications. If you re-enter the command every hour or two it'll make sure the port stays tied to you. In the terminal/konsole, the up arrow key lets you scroll through previously issued commands, you don't need to type it again every time!
+
+Hope this helps. :)
